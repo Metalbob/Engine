@@ -1,0 +1,7 @@
+Debug/
+*/Debug/
+*.ilk
+*.dll
+*.lib
+*.exe
+*.pdbz
