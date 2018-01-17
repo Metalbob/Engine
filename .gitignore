@@ -5,3 +5,10 @@ Debug/
 *.lib
 *.exe
 *.pdbz
+*.suo
+*.db*
+*.opendb
+*.ipch
+*.cmake
+*.in
+*.orig
