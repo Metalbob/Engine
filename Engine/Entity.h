@@ -13,6 +13,6 @@ namespace Engine
 
 	public:
 		Entity();
-		~Entity();
+		virtual ~Entity();
 	};
 }

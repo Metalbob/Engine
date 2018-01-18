@@ -1,6 +1,9 @@
 #pragma once
 
+#ifndef ENGINE_EXP
 #define ENGINE_EXP __declspec(dllexport)
+#endif
+
 
 namespace Engine
 {

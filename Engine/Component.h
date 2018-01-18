@@ -6,7 +6,7 @@ namespace Engine
 	{
 	public:
 		Component();
-		~Component();
+		virtual ~Component();
 	};
 }
 

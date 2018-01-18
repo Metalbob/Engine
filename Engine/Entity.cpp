@@ -7,7 +7,6 @@ namespace Engine
 	{
 	}
 
-
 	Entity::~Entity()
 	{
 	}
