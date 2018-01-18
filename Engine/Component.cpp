@@ -7,6 +7,9 @@ namespace Engine
 	{
 	}
 
+	void Component::Start() {}
+	void Component::Update() {}
+
 	Component::~Component()
 	{
 	}

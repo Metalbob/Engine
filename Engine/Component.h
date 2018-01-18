@@ -7,6 +7,9 @@ namespace Engine
 	public:
 		Component();
 		virtual ~Component();
+
+		virtual void Start();
+		virtual void Update();
 	};
 }
 

@@ -7,6 +7,11 @@ namespace Engine
 	{
 	}
 
+	void Scene::CallEntitiesScripts()
+	{
+		for (int i = 0; i < entities.size(); i++)
+			entities[i]->UpdateComponent();
+	}
 
 	Scene::~Scene()
 	{

@@ -1,6 +1,6 @@
 #pragma once
 
-#include <list>
+#include <vector>
 
 #include "Entity.h"
 
@@ -8,9 +8,12 @@ namespace Engine
 {
 	class Scene
 	{
-		std::list<Entity> entities;
+		std::vector<Entity *> entities;
 
 	public:
+
+		void CallEntitiesScripts();
+
 		Scene();
 		~Scene();
 	};

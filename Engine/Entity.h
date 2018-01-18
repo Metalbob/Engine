@@ -1,6 +1,6 @@
 #pragma once
 
-#include <list>
+#include <vector>
 
 #include "Component.h"
 
@@ -8,11 +8,13 @@ namespace Engine
 {
 	class Entity
 	{
-		std::list<Component> components;
-		std::list<Entity> children;
+		std::vector<Component *> components;
+		std::vector<Entity *> children;
 
 	public:
 		Entity();
 		virtual ~Entity();
+
+		void UpdateComponent();
 	};
 }

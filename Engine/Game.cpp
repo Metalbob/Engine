@@ -11,6 +11,7 @@ namespace Engine
 	{
 		inputManager = InputManager::GetInstance();
 		inputManager->BindKey<Game>(SDLK_ESCAPE, this, &Game::Quit);
+		sceneManager = SceneManager::GetInstance();
 	}
 
 	ENGINE_EXP void Game::MainLoop()
@@ -18,6 +19,7 @@ namespace Engine
 		while (run)
 		{
 			inputManager->DoInputs();
+			sceneManager->UpdateCurrentScene();
 		}
 	}
 
