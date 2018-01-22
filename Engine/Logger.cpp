@@ -7,6 +7,8 @@ namespace Engine
 {
 	ENGINE_EXP void Logger::Log(const char * msg)
 	{
+		HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
+		SetConsoleTextAttribute(hConsole, 15);
 		std::cout << msg << std::endl;
 	}
 

@@ -34,20 +34,34 @@ namespace Engine
 			switch (event.type)
 			{
 			case SDL_KEYDOWN:
-				if (KeyInputDelegates.find(event.key.keysym.sym) != KeyInputDelegates.end())
-					KeyInputDelegates[event.key.keysym.sym]->Invoke();
+				if (KeyInputDelegatesKeyDown.find(event.key.keysym.sym) != KeyInputDelegatesKeyDown.end())
+					KeyInputDelegatesKeyDown[event.key.keysym.sym]->Invoke();
 				break;
-
-			default:break;
+			case SDL_KEYUP:
+				if (KeyInputDelegatesKeyUp.find(event.key.keysym.sym) != KeyInputDelegatesKeyUp.end())
+					KeyInputDelegatesKeyUp[event.key.keysym.sym]->Invoke();
+				break;
+			default:
+				break;
 			}
 		}
 	}
 
-	void InputManager::BindKey(Uint32 key, void(*func)())
+	void InputManager::BindKey(Uint32 key, SDL_EventType type, void(*func)())
 	{
-		if (KeyInputDelegates.find(key) == KeyInputDelegates.end())
-			KeyInputDelegates[key] = new KeyDelegate();
+		if (type == SDL_EventType::SDL_KEYDOWN)
+		{
+			if (KeyInputDelegatesKeyDown.find(key) == KeyInputDelegatesKeyDown.end())
+				KeyInputDelegatesKeyDown[key] = new KeyDelegate();
 
-		*(KeyInputDelegates[key]) += new KeyDelegate::FunctionSubscriber(func);
+			*(KeyInputDelegatesKeyDown[key]) += new KeyDelegate::FunctionSubscriber(func);
+		}
+		if (type == SDL_EventType::SDL_KEYUP)
+		{
+			if (KeyInputDelegatesKeyUp.find(key) == KeyInputDelegatesKeyUp.end())
+				KeyInputDelegatesKeyUp[key] = new KeyDelegate();
+
+			*(KeyInputDelegatesKeyUp[key]) += new KeyDelegate::FunctionSubscriber(func);
+		}
 	}
 }

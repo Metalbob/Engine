@@ -7,6 +7,8 @@
 #include "SceneManager.h"
 #include "InputManager.h"
 
+#include "Window.h"
+
 namespace Engine
 {
 	class Game
@@ -18,7 +20,7 @@ namespace Engine
 	public:
 		ENGINE_EXP Game();
 
-		ENGINE_EXP void MainLoop();
+		ENGINE_EXP void MainLoop(Window * toRemove);
 
 		ENGINE_EXP void Quit();
 

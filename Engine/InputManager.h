@@ -10,7 +10,8 @@ namespace Engine
 {
 	class InputManager
 	{
-		std::map<Uint32, KeyDelegate *> KeyInputDelegates;
+		std::map<Uint32, KeyDelegate *> KeyInputDelegatesKeyDown;
+		std::map<Uint32, KeyDelegate *> KeyInputDelegatesKeyUp;
 
 		static InputManager * instance;
 		InputManager();
@@ -22,15 +23,25 @@ namespace Engine
 
 		static InputManager * GetInstance();
 		void DoInputs();
-		void BindKey(Uint32 key, void (*func)());
+		void BindKey(Uint32 key, SDL_EventType type, void (*func)());
 
 		template<class T>
-		void BindKey(Uint32 key, T * object, void (T::*method)())
+		void BindKey(Uint32 key, SDL_EventType type, T * object, void (T::*method)())
 		{
-			if (KeyInputDelegates.find(key) == KeyInputDelegates.end())
-				KeyInputDelegates[key] = new KeyDelegate();
+			if (type == SDL_EventType::SDL_KEYDOWN)
+			{
+				if (KeyInputDelegatesKeyDown.find(key) == KeyInputDelegatesKeyDown.end())
+					KeyInputDelegatesKeyDown[key] = new KeyDelegate();
 
-			*(KeyInputDelegates[key]) += new KeyDelegate::MethodSubscriber<T>(object, method);
+				*(KeyInputDelegatesKeyDown[key]) += new KeyDelegate::MethodSubscriber<T>(object, method);
+			}
+			if (type == SDL_EventType::SDL_KEYUP)
+			{
+				if (KeyInputDelegatesKeyUp.find(key) == KeyInputDelegatesKeyUp.end())
+					KeyInputDelegatesKeyUp[key] = new KeyDelegate();
+
+				*(KeyInputDelegatesKeyUp[key]) += new KeyDelegate::MethodSubscriber<T>(object, method);
+			}
 		}
 	};
 }

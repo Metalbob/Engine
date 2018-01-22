@@ -4,6 +4,8 @@
 #include <iostream>
 
 #include <SDL/SDL.h>
+#include <GL/glew.h>
+#include "Logger.h"
 
 namespace Engine
 {
@@ -20,12 +22,28 @@ namespace Engine
 		this->height = height;
 
 
-		auto win = SDL_CreateWindow(title, posX + 7, posY + 30, width, height, SDL_WINDOW_OPENGL);
+		window = SDL_CreateWindow(title, posX + 7, posY + 30, width, height, SDL_WINDOW_OPENGL);
 
-		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
-		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
+		SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+		SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
 
-		SDL_GLContext glContext = SDL_GL_CreateContext(win);
+		context = SDL_GL_CreateContext(window);
+		if (context == nullptr)
+		{
+			Logger::LogError("Failed to create context");
+		}
+		else
+		{
+			glewExperimental = GL_TRUE;
+			GLuint glewError = glewInit();
+			if (glewError != GLEW_OK)
+			{
+				Logger::LogError("Error initializing GLEW! ");
+				Logger::LogError((char *)glewGetErrorString(glewError));
+			}
+		}
 	}
 
 	ENGINE_EXP Window::Window(const char * title, unsigned int width, unsigned int height, EWindowMode mode)
@@ -57,18 +75,37 @@ namespace Engine
 			break;
 		}
 
-		auto win = SDL_CreateWindow(title, posX, posY, width, height, sdlFlags);
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 3);
+		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 1);
+		SDL_GL_SetAttribute(SDL_GL_DOUBLEBUFFER, 1);
+		SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 24);
 
-		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);
-		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, 0);
+		window = SDL_CreateWindow(title, posX, posY, width, height, sdlFlags);
 
-		SDL_GLContext glContext = SDL_GL_CreateContext(win);
+		context = SDL_GL_CreateContext(window);
+
+		if (context == nullptr)
+		{
+			Logger::LogError("Failed to create context");
+		}
+		else
+		{
+			glewExperimental = GL_TRUE;
+			GLenum glewError = glewInit();
+			if (glewError != GLEW_OK)
+			{
+				Logger::LogError("Error initializing GLEW! ");
+				Logger::LogError((char *)glewGetErrorString(glewError));
+			}
+		}
 	}
 
 
 
 	ENGINE_EXP Window::~Window()
 	{
+		SDL_GL_DeleteContext(context);
+		SDL_DestroyWindow(window);
 		SDL_Quit();
 	}
 

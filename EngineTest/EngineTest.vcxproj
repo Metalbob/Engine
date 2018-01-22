@@ -77,9 +77,9 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Users\Julien Falcioni\Desktop\GitRepo\Engine\Includes;C:\Users\Julien Falcioni\Desktop\GitRepo\Engine\Engine;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)\..\glew-2.1.0\include;C:\Users\Julien Falcioni\Desktop\GitRepo\Engine\Includes;C:\Users\Julien Falcioni\Desktop\GitRepo\Engine\Engine;$(IncludePath)</IncludePath>
     <ExecutablePath>$(ExecutablePath)</ExecutablePath>
-    <LibraryPath>C:\Users\Julien Falcioni\Desktop\GitRepo\Engine\Libs;C:\Users\Julien Falcioni\Desktop\GitRepo\Engine\x64\Debug;$(LibraryPath)</LibraryPath>
+    <LibraryPath>$(ProjectDir)\..\glew-2.1.0\lib\Release\x64;C:\Users\Julien Falcioni\Desktop\GitRepo\Engine\Libs;C:\Users\Julien Falcioni\Desktop\GitRepo\Engine\x64\Debug;$(LibraryPath)</LibraryPath>
     <ReferencePath>$(ReferencePath)</ReferencePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -116,7 +116,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>SDL2.lib;SDL2main.lib;Engine.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;glew32.lib;glew32s.lib;SDL2.lib;SDL2main.lib;Engine.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <DelayLoadDLLs>%(DelayLoadDLLs)</DelayLoadDLLs>
     </Link>
   </ItemDefinitionGroup>
