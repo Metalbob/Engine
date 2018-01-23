@@ -19,7 +19,7 @@ namespace Engine
 		VertexBufferObject(GLfloat * datas, unsigned int datasLength, GLuint * indices, unsigned int indicesLength);
 		~VertexBufferObject();
 
-		void Bind(GLuint vert, GLuint col);
+		void Bind();
 		void Draw();
 	};
 }

@@ -15,17 +15,16 @@ namespace Engine
 		glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(this->indices) * indicesLength, this->indices, GL_STATIC_DRAW);
 	}
 
-	void VertexBufferObject::Bind(GLuint vert, GLuint col)
+	void VertexBufferObject::Bind()
 	{
 		glBindBuffer(GL_ARRAY_BUFFER, buffersID[0]);
-		glVertexAttribPointer(col, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 6, (float *)NULL + (0));
-		glVertexAttribPointer(vert, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 6, (float *)NULL + (3));
-
 		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffersID[1]);
 	}
 
 	void VertexBufferObject::Draw()
 	{
+		glBindBuffer(GL_ARRAY_BUFFER, buffersID[0]);
+		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, buffersID[1]);
 		glDrawElements(GL_TRIANGLES, indicesLength, GL_UNSIGNED_INT, 0);
 	}
 

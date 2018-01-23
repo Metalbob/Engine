@@ -16,6 +16,7 @@
 #include "Program.h"
 
 #include "VertexBufferObject.h"
+#include "VertexArrayObject.h"
 
 GLfloat CubeArray[48] = {
 	1.0f, 0.0f, 0.0f, -1.0f, 1.0f, -1.0f,
@@ -39,6 +40,18 @@ GLuint IndiceArray[36] = {
 
 float vertices[] = { -0.5, -0.5,   0.0, 0.5,   0.5, -0.5 };
 
+float square[18] = {
+	-0.5f, -0.5f, 0.0f, // Coin en bas à gauche
+	-0.5f, 0.5f, 0.0f, // Coin en haut à gauche
+	0.5, 0.5f, 0.0f, // Coin en haut à droite
+
+	0.5f, -0.5f, 0.0f, // Coin en bas à droite
+	-0.5f, -0.5f, 0.0f, // Coin en bas à gauche
+	0.5f, 0.5f, 0.0f // Coin en haut à droite
+};
+
+unsigned int vaoID[1]; // VAO
+unsigned int vboID[1]; // VBO
 
 namespace Engine
 {
@@ -73,23 +86,44 @@ namespace Engine
 		GLuint vertexColorAttrib = p.GetAttributeLocation("VertexColor");																						//
 																																								//
 		VertexBufferObject vbo = VertexBufferObject(CubeArray, 48, IndiceArray, 36);																			//
-																																								//
-		glm::mat4 matrix = glm::perspective(glm::radians(60.0f), 16.0f / 9.0f, 0.1f, 100.f) * glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -5.0f));	//
+		VertexArrayObject vao = VertexArrayObject();																																			//
+		vao.Bind();
+		//vao.AddVBO(CubeArray, 48, IndiceArray, 36);
+
+		//glVertexAttribPointer(vertexColorAttrib, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 6, (float *)NULL + (0));
+		//glVertexAttribPointer(vertexPositionAttrib, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 6, (float *)NULL + (3));
+		//vao.Unbind();
+
+		// Et on appelle toutes les fonctions qui modifient l'état des tableaux de sommets
+
+		glEnableVertexAttribArray(vertexPositionAttrib);
+		glEnableVertexAttribArray(vertexColorAttrib);
+
+		vbo.Bind();
+
+		// On envoie les données
+		glVertexAttribPointer(vertexColorAttrib, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 6, (float *)NULL + (0));
+		glVertexAttribPointer(vertexPositionAttrib, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 6, (float *)NULL + (3));
+
+		vao.Unbind();
+
+		glm::mat4 matrix = glm::perspective(glm::radians(60.0f), 16.0f / 9.0f, 0.1f, 100.f) * glm::rotate(glm::translate(glm::mat4(1.0f), glm::vec3(0.0f, 0.0f, -5.0f)), 45.0f, glm::vec3(1.0f,1.0f,1.0f));
 
 		while (run)
 		{
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+			glEnable(GL_DEPTH_TEST);
+			glDepthFunc(GL_LESS);
 			inputManager->DoInputs();
 			sceneManager->UpdateCurrentScene();
 
-			p.UseProgram();															//
-																					//
-			glUniformMatrix4fv(uniformID, 1, GL_FALSE, glm::value_ptr(matrix));		//
-																					// a enlever
-			vbo.Bind(vertexPositionAttrib, vertexColorAttrib);						//
-			vbo.Draw();																//
-																					//
-			p.StopUseProgram();														//
+			p.UseProgram();
+			
+			glUniformMatrix4fv(uniformID, 1, GL_FALSE, glm::value_ptr(matrix));
+			
+			vao.Draw();
+
+			p.StopUseProgram();
 
 			SDL_GL_SwapWindow(toRemove->window);
 		}
